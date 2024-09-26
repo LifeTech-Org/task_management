@@ -27,8 +27,9 @@ class SignIn extends StatelessWidget {
               const SizedBox(
                 height: 36,
               ),
-              TextButton(
-                onPressed: () {
+              CustomButton(
+                text: 'Log In',
+                action: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -36,22 +37,6 @@ class SignIn extends StatelessWidget {
                     ),
                   );
                 },
-                style: TextButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  minimumSize: const Size(
-                    double.infinity,
-                    50,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text(
-                  'Log In',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
               ),
               const SizedBox(
                 height: 24,
@@ -94,6 +79,42 @@ class SignIn extends StatelessWidget {
               )
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomButton extends StatelessWidget {
+  const CustomButton({
+    super.key,
+    required this.text,
+    required this.action,
+  });
+
+  final String text;
+  final Function action;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        action();
+      },
+      style: TextButton.styleFrom(
+        backgroundColor: Theme.of(context).primaryColor,
+        minimumSize: const Size(
+          double.infinity,
+          50,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
         ),
       ),
     );

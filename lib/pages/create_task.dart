@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_management/pages/auth/signin.dart';
 import 'package:task_management/widgets/custom_textfield.dart';
 
 class CreateTask extends StatelessWidget {
@@ -10,46 +11,68 @@ class CreateTask extends StatelessWidget {
       appBar: AppBar(
         title: Text("Create Task"),
       ),
-      body: Column(
-        children: [
-          const FormField(title: 'Task Title', form: CustomTextField()),
-          const Row(
-            children: [
-              FormField(
-                  title: 'Start Time',
-                  form: CustomTextField(
-                    type: TextInputType.datetime,
-                  )),
-              FormField(
-                  title: 'End Time',
-                  form: CustomTextField(type: TextInputType.datetime)),
-            ],
-          ),
-          const FormField(
-              title: 'Start Date',
-              form: CustomTextField(type: TextInputType.datetime)),
-          TextButton(
-            onPressed: () {},
-            style: TextButton.styleFrom(
-              backgroundColor: Theme.of(context).primaryColor,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            const CustomFormField(title: 'Task Title', form: CustomTextField()),
+            const SizedBox(
+              height: 16,
             ),
-            child: const Text('Create'),
-          )
-        ],
+            const Row(
+              children: [
+                Expanded(
+                  child: CustomFormField(
+                    title: 'Start Time',
+                    form: CustomTextField(
+                      type: TextInputType.datetime,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 12,
+                ),
+                Expanded(
+                  child: CustomFormField(
+                    title: 'End Time',
+                    form: CustomTextField(type: TextInputType.datetime),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            const CustomFormField(
+                title: 'Start Date',
+                form: CustomTextField(type: TextInputType.datetime)),
+            const SizedBox(
+              height: 36,
+            ),
+            CustomButton(text: 'Create', action: () {})
+          ],
+        ),
       ),
     );
   }
 }
 
-class FormField extends StatelessWidget {
-  const FormField({super.key, required this.title, required this.form});
+class CustomFormField extends StatelessWidget {
+  const CustomFormField({super.key, required this.title, required this.form});
   final String title;
   final Widget form;
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title),
+        Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
         form,
       ],
     );
