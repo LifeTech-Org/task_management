@@ -8,7 +8,7 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
       ),
       body: Column(
         children: [
@@ -21,7 +21,7 @@ class Profile extends StatelessWidget {
                 ),
               );
             },
-            child: Text('Edit profile'),
+            child: const Text('Edit profile'),
           ),
         ],
       ),

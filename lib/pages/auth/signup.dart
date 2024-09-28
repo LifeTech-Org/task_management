@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_management/pages/auth/forget_password.dart';
-import 'package:task_management/pages/auth/signup.dart';
+import 'package:task_management/pages/create_task.dart';
 import 'package:task_management/widgets/custom_textfield.dart';
 
 class SignUp extends StatelessWidget {
@@ -17,15 +16,24 @@ class SignUp extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            CustomTextField(),
+            CustomFormField(
+              title: 'Email',
+              form: CustomTextField(),
+            ),
             const SizedBox(
               height: 12,
             ),
-            CustomTextField(),
+            CustomFormField(
+              title: 'Password',
+              form: CustomTextField(),
+            ),
             const SizedBox(
               height: 12,
             ),
-            CustomTextField(),
+            CustomFormField(
+              title: 'Confirm Password',
+              form: CustomTextField(),
+            ),
             const SizedBox(
               height: 36,
             ),

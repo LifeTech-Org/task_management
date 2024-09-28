@@ -7,7 +7,7 @@ class ManageTeam extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Manage Team"),
+        title: const Text("Manage Team"),
         centerTitle: true,
       ),
       body: const SingleChildScrollView(
