@@ -3,7 +3,13 @@ import 'package:task_management/pages/create_task.dart';
 import 'package:task_management/widgets/custom_textfield.dart';
 
 class SignUp extends StatelessWidget {
-  const SignUp({super.key});
+  SignUp({super.key});
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
+  Future<void> signUp() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -18,21 +24,28 @@ class SignUp extends StatelessWidget {
           children: [
             CustomFormField(
               title: 'Email',
-              form: CustomTextField(),
+              form: CustomTextField(
+                type: TextInputType.emailAddress,
+                controller: _emailController,
+              ),
             ),
             const SizedBox(
               height: 12,
             ),
             CustomFormField(
               title: 'Password',
-              form: CustomTextField(),
+              form: CustomTextField(
+                controller: _passwordController,
+              ),
             ),
             const SizedBox(
               height: 12,
             ),
             CustomFormField(
               title: 'Confirm Password',
-              form: CustomTextField(),
+              form: CustomTextField(
+                controller: _confirmPasswordController,
+              ),
             ),
             const SizedBox(
               height: 36,
@@ -69,7 +82,7 @@ class SignUp extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SignUp(),
+                        builder: (context) => SignUp(),
                       ),
                     );
                   },
