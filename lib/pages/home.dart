@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:task_management/pages/auth/signin.dart';
 import 'package:task_management/pages/create_task.dart';
@@ -43,7 +44,7 @@ class Home extends StatelessWidget {
           ),
         ],
       ),
-      drawer: const CustomDrawer(),
+      drawer: CustomDrawer(),
       body: const Padding(
         padding: EdgeInsets.all(8.0),
         child: Column(
@@ -84,10 +85,10 @@ class Home extends StatelessWidget {
 }
 
 class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({
+  CustomDrawer({
     super.key,
   });
-
+  final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -197,9 +198,10 @@ class CustomDrawer extends StatelessWidget {
                 ),
               );
             },
-            child: const ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
+            child: ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
+              onTap: () => _auth.signOut(),
             ),
           ),
         ],
