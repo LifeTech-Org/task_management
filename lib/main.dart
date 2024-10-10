@@ -23,17 +23,15 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue.shade900),
         useMaterial3: true,
       ),
-      home: Scaffold(
-        body: StreamBuilder(
-            stream: stream,
-            builder: (context, snapshot) {
-              if (snapshot.data == null) {
-                return SignIn();
-              } else {
-                return Home();
-              }
-            }),
-      ),
+      home: StreamBuilder(
+          stream: stream,
+          builder: (context, snapshot) {
+            if (snapshot.data == null) {
+              return SignIn();
+            } else {
+              return Home();
+            }
+          }),
     );
   }
 }

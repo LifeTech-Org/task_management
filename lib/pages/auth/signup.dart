@@ -33,6 +33,9 @@ class _SignUpState extends State<SignUp> {
         await _auth.createUserWithEmailAndPassword(
             email: _emailController.text.trim(),
             password: _passwordController.text.trim());
+        await _auth.signInWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim());
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Account created successfully!')));
         setState(() {
@@ -92,32 +95,10 @@ class _SignUpState extends State<SignUp> {
             const SizedBox(
               height: 36,
             ),
-            TextButton(
-              onPressed: () {
-                if (!isCreatingUser) {
-                  signUp(context);
-                }
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: Theme.of(context).primaryColor,
-                minimumSize: const Size(
-                  double.infinity,
-                  50,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: isCreatingUser
-                  ? const CircularProgressIndicator(
-                      color: Colors.white,
-                    )
-                  : const Text(
-                      'Register',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
+            CustomButton(
+              text: 'Register',
+              action: () => signUp(context),
+              isLoading: isCreatingUser,
             ),
             const SizedBox(
               height: 24,

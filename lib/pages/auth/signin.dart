@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:task_management/pages/auth/forget_password.dart';
 import 'package:task_management/pages/auth/signup.dart';
@@ -5,8 +6,43 @@ import 'package:task_management/pages/create_task.dart';
 import 'package:task_management/pages/home.dart';
 import 'package:task_management/widgets/custom_textfield.dart';
 
-class SignIn extends StatelessWidget {
+class SignIn extends StatefulWidget {
   const SignIn({super.key});
+
+  @override
+  State<SignIn> createState() => _SignInState();
+}
+
+class _SignInState extends State<SignIn> {
+  final TextEditingController _emailController = TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
+
+  final _auth = FirebaseAuth.instance;
+
+  bool isSigningIn = false;
+
+  Future<void> signIn(BuildContext context) async {
+    try {
+      setState(() {
+        isSigningIn = true;
+      });
+      await _auth.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Account Signed In successfully!')));
+      setState(() {
+        isSigningIn = false;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Something went wrong!')));
+      setState(() {
+        isSigningIn = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,30 +56,28 @@ class SignIn extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const CustomFormField(
-                form: CustomTextField(),
+              CustomFormField(
+                form: CustomTextField(
+                  controller: _emailController,
+                ),
                 title: 'Email',
               ),
               const SizedBox(
                 height: 12,
               ),
-              const CustomFormField(
-                form: CustomTextField(),
+              CustomFormField(
+                form: CustomTextField(
+                  controller: _passwordController,
+                ),
                 title: 'Password',
               ),
               const SizedBox(
                 height: 36,
               ),
               CustomButton(
-                text: 'Log In',
-                action: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Home(),
-                    ),
-                  );
-                },
+                text: 'Login',
+                action: () => signIn(context),
+                isLoading: isSigningIn,
               ),
               const SizedBox(
                 height: 24,
@@ -97,10 +131,12 @@ class CustomButton extends StatelessWidget {
     super.key,
     required this.text,
     required this.action,
+    this.isLoading = false,
   });
 
   final String text;
   final Function action;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -118,12 +154,16 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
       ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Colors.white,
-        ),
-      ),
+      child: isLoading
+          ? const CircularProgressIndicator(
+              color: Colors.white,
+            )
+          : Text(
+              text,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
     );
   }
 }
