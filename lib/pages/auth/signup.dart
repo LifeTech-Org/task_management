@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:task_management/pages/auth/signin.dart';
 import 'package:task_management/pages/create_task.dart';
 import 'package:task_management/widgets/custom_textfield.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUp extends StatefulWidget {
   SignUp({super.key});
@@ -20,6 +21,7 @@ class _SignUpState extends State<SignUp> {
       TextEditingController();
 
   final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
 
   bool isCreatingUser = false;
 
@@ -30,12 +32,16 @@ class _SignUpState extends State<SignUp> {
         setState(() {
           isCreatingUser = true;
         });
-        await _auth.createUserWithEmailAndPassword(
+        final res = await _auth.createUserWithEmailAndPassword(
             email: _emailController.text.trim(),
             password: _passwordController.text.trim());
-        await _auth.signInWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim());
+        await _firestore.collection("users").add({
+          "email": _emailController.text.trim(),
+          "uid": res.user!.uid,
+        });
+        // await _auth.signInWithEmailAndPassword(
+        //     email: _emailController.text.trim(),
+        //     password: _passwordController.text.trim());
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Account created successfully!')));
         setState(() {

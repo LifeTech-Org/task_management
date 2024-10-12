@@ -45,14 +45,14 @@ class Home extends StatelessWidget {
         ],
       ),
       drawer: CustomDrawer(),
-      body: const Padding(
-        padding: EdgeInsets.all(8.0),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 60,
             ),
-            Row(
+            const Row(
               children: [
                 Expanded(
                     child:
@@ -63,7 +63,7 @@ class Home extends StatelessWidget {
                         ActionCard(title: "Manage Task", page: ManageTask())),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Row(
@@ -71,8 +71,8 @@ class Home extends StatelessWidget {
                 Expanded(
                     child:
                         ActionCard(title: "Create Team", page: CreateTeam())),
-                SizedBox(width: 12),
-                Expanded(
+                const SizedBox(width: 12),
+                const Expanded(
                     child:
                         ActionCard(title: "Manage Team", page: ManageTeam())),
               ],
@@ -149,7 +149,7 @@ class CustomDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const CreateTeam(),
+                  builder: (context) => CreateTeam(),
                 ),
               );
             },

@@ -97,7 +97,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             CustomButton(
               text: 'Continue',
               isLoading: isSendingCode,
-              action: resetPassword,
+              action: () => resetPassword(context),
             ),
             const SizedBox(
               height: 24,
