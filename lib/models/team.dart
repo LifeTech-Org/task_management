@@ -7,6 +7,14 @@ class Team {
     required this.personnels,
   });
   final String name;
-  final DateTime description;
+  final String description;
   final List<Personnel> personnels;
+
+  factory Team.fromJson(Map<String, dynamic> json) {
+    return Team(
+      name: json['name'],
+      description: json['description'],
+      personnels: [],
+    );
+  }
 }

@@ -72,7 +72,7 @@ class Home extends StatelessWidget {
                     child:
                         ActionCard(title: "Create Team", page: CreateTeam())),
                 const SizedBox(width: 12),
-                const Expanded(
+                Expanded(
                     child:
                         ActionCard(title: "Manage Team", page: ManageTeam())),
               ],
@@ -164,7 +164,7 @@ class CustomDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const ManageTeam(),
+                  builder: (context) => ManageTeam(),
                 ),
               );
             },
