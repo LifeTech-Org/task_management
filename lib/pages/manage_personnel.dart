@@ -7,12 +7,12 @@ import 'package:url_launcher/url_launcher.dart';
 class ManagePersonnel extends StatelessWidget {
   ManagePersonnel({super.key});
   final _firestore = FirebaseFirestore.instance;
-  Future<List<Personnel>> fetchPersonnels() async {
-    final collection = await _firestore.collection("personnels").get();
-    final docs =
-        collection.docs.map((doc) => {...doc.data(), "id": doc.id}).toList();
-    final res = docs.map((element) => Personnel.fromJson(element)).toList();
-    return res;
+  Stream<QuerySnapshot<Map<String, dynamic>>> fetchPersonnels() {
+    return _firestore.collection("personnels").snapshots();
+    // final docs =
+    //     collection.docs.map((doc) => {...doc.data(), "id": doc.id}).toList();
+    // final res = docs.map((element) => Personnel.fromJson(element)).toList();
+    // return res;
   }
 
   @override
@@ -24,13 +24,17 @@ class ManagePersonnel extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: FutureBuilder(
-          future: fetchPersonnels(),
+        child: StreamBuilder(
+          stream: fetchPersonnels(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              final personels = snapshot.data!.docs
+                  .map((doc) => {...doc.data(), "id": doc.id})
+                  .map((json) => Personnel.fromJson(json))
+                  .toList();
               return SingleChildScrollView(
                 child: Column(
-                  children: snapshot.data!
+                  children: personels!
                       .map((personnel) => Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             child: PersonnelWidget(
@@ -50,17 +54,47 @@ class ManagePersonnel extends StatelessWidget {
 }
 
 class PersonnelWidget extends StatelessWidget {
-  const PersonnelWidget({
+  PersonnelWidget({
     super.key,
     required this.personnel,
   });
   final Personnel personnel;
+  final _firestore = FirebaseFirestore.instance;
 
   void makePhoneCall() async {
     await launchUrl(Uri(
       scheme: 'tel',
       path: personnel.phoneNumber,
     ));
+  }
+
+  void deletePersonnel(BuildContext context) async {
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Do you want to delete this personnel?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('No'),
+              ),
+              TextButton(
+                  onPressed: () async {
+                    await _firestore
+                        .collection("personnels")
+                        .doc(personnel.id)
+                        .delete();
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Personnel deleted successfully!')));
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Yes'))
+            ],
+          );
+        });
   }
 
   @override
@@ -126,6 +160,19 @@ class PersonnelWidget extends StatelessWidget {
                   ),
                   style: IconButton.styleFrom(
                       backgroundColor: Colors.blue.shade800),
+                ),
+                IconButton(
+                  iconSize: 20,
+                  padding: const EdgeInsets.all(0),
+                  onPressed: () {
+                    deletePersonnel(context);
+                  },
+                  icon: const Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                  style: IconButton.styleFrom(
+                      backgroundColor: Colors.red.shade800),
                 )
               ],
             )

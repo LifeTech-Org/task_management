@@ -58,7 +58,7 @@ class _EditPersonnelState extends State<EditPersonnel> {
   final _firestore = FirebaseFirestore.instance;
   bool _isEditingPersonnel = false;
 
-  void createPersonnel(BuildContext context) async {
+  void updatePersonnel(BuildContext context) async {
     try {
       setState(() {
         _isEditingPersonnel = true;
@@ -72,7 +72,8 @@ class _EditPersonnelState extends State<EditPersonnel> {
         "phoneNumber": _phoneNumberController.text.trim(),
       });
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Personnel successfully created!!!')));
+          const SnackBar(content: Text('Personnel successfully updated!!!')));
+      Navigator.pop(context);
       setState(() {
         _isEditingPersonnel = false;
       });
@@ -139,7 +140,9 @@ class _EditPersonnelState extends State<EditPersonnel> {
             ),
             CustomButton(
               text: 'Update Personnel',
-              action: () {},
+              action: () {
+                updatePersonnel(context);
+              },
               isLoading: _isEditingPersonnel,
             )
           ],

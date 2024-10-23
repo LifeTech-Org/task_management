@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_management/models/personnel.dart';
 import 'package:task_management/pages/auth/signin.dart';
 import 'package:task_management/pages/create_task.dart';
+import 'package:task_management/pages/manage_personnel.dart';
 import 'package:task_management/widgets/custom_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -40,6 +41,12 @@ class _CreatePersonnelState extends State<CreatePersonnel> {
       setState(() {
         _isCreatingPersonnel = false;
       });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ManagePersonnel(),
+        ),
+      );
     } catch (e) {
       setState(() {
         _isCreatingPersonnel = false;
