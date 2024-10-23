@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:task_management/pages/auth/signin.dart';
 import 'package:task_management/pages/create_task.dart';
-import 'package:task_management/pages/create_team.dart';
+import 'package:task_management/pages/create_personnel.dart';
 import 'package:task_management/pages/manage_task.dart';
-import 'package:task_management/pages/manage_team.dart';
+import 'package:task_management/pages/manage_personnel.dart';
 import 'package:task_management/pages/profile.dart';
 import 'package:task_management/widgets/action_cards.dart';
 
@@ -69,12 +69,12 @@ class Home extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                    child:
-                        ActionCard(title: "Create Team", page: CreateTeam())),
+                    child: ActionCard(
+                        title: "Create Personnel", page: CreatePersonnel())),
                 const SizedBox(width: 12),
                 Expanded(
-                    child:
-                        ActionCard(title: "Manage Team", page: ManageTeam())),
+                    child: ActionCard(
+                        title: "Manage Personnel", page: ManagePersonnel())),
               ],
             )
           ],
@@ -149,13 +149,13 @@ class CustomDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CreateTeam(),
+                  builder: (context) => CreatePersonnel(),
                 ),
               );
             },
             child: const ListTile(
               leading: Icon(Icons.people),
-              title: Text('Create Team'),
+              title: Text('Create Personnel'),
             ),
           ),
           InkWell(
@@ -164,13 +164,13 @@ class CustomDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ManageTeam(),
+                  builder: (context) => ManagePersonnel(),
                 ),
               );
             },
             child: const ListTile(
               leading: Icon(Icons.settings),
-              title: Text('Manage Team'),
+              title: Text('Manage Personnel'),
             ),
           ),
           InkWell(

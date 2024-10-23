@@ -26,7 +26,11 @@ class ActionCard extends StatelessWidget {
         child: Center(
           child: Text(
             title,
-            style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
       ),
