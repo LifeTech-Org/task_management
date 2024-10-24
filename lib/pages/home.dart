@@ -52,7 +52,7 @@ class Home extends StatelessWidget {
             const SizedBox(
               height: 60,
             ),
-            const Row(
+            Row(
               children: [
                 Expanded(
                     child:
@@ -119,7 +119,7 @@ class CustomDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const CreateTask(),
+                  builder: (context) => CreateTask(),
                 ),
               );
             },
