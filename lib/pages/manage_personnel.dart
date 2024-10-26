@@ -9,10 +9,6 @@ class ManagePersonnel extends StatelessWidget {
   final _firestore = FirebaseFirestore.instance;
   Stream<QuerySnapshot<Map<String, dynamic>>> fetchPersonnels() {
     return _firestore.collection("personnels").snapshots();
-    // final docs =
-    //     collection.docs.map((doc) => {...doc.data(), "id": doc.id}).toList();
-    // final res = docs.map((element) => Personnel.fromJson(element)).toList();
-    // return res;
   }
 
   @override
