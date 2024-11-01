@@ -13,10 +13,9 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
-
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
@@ -32,12 +31,12 @@ class _SignUpState extends State<SignUp> {
         setState(() {
           isCreatingUser = true;
         });
-        final res = await _auth.createUserWithEmailAndPassword(
+        final credential = await _auth.createUserWithEmailAndPassword(
             email: _emailController.text.trim(),
             password: _passwordController.text.trim());
-        await _firestore.collection("users").add({
+        await _firestore.collection("users").doc(credential.user!.uid).set({
+          "name": _nameController.text.trim(),
           "email": _emailController.text.trim(),
-          "uid": res.user!.uid,
         });
         // await _auth.signInWithEmailAndPassword(
         //     email: _emailController.text.trim(),
@@ -67,66 +66,77 @@ class _SignUpState extends State<SignUp> {
         title: const Text('Register'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          children: [
-            CustomFormField(
-              title: 'Email',
-              form: CustomTextField(
-                type: TextInputType.emailAddress,
-                controller: _emailController,
-              ),
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            CustomFormField(
-              title: 'Password',
-              form: CustomTextField(
-                controller: _passwordController,
-                obscureText: true,
-              ),
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            CustomFormField(
-              title: 'Confirm Password',
-              form: CustomTextField(
-                controller: _confirmPasswordController,
-                obscureText: true,
-              ),
-            ),
-            const SizedBox(
-              height: 36,
-            ),
-            CustomButton(
-              text: 'Register',
-              action: () => signUp(context),
-              isLoading: isCreatingUser,
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Already have an account? '),
-                InkWell(
-                  child: Text('Register'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SignIn(),
-                      ),
-                    );
-                  },
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            children: [
+              CustomFormField(
+                title: 'Name',
+                form: CustomTextField(
+                  controller: _nameController,
                 ),
-              ],
-            )
-          ],
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              CustomFormField(
+                title: 'Email',
+                form: CustomTextField(
+                  type: TextInputType.emailAddress,
+                  controller: _emailController,
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              CustomFormField(
+                title: 'Password',
+                form: CustomTextField(
+                  controller: _passwordController,
+                  obscureText: true,
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              CustomFormField(
+                title: 'Confirm Password',
+                form: CustomTextField(
+                  controller: _confirmPasswordController,
+                  obscureText: true,
+                ),
+              ),
+              const SizedBox(
+                height: 36,
+              ),
+              CustomButton(
+                text: 'Register',
+                action: () => signUp(context),
+                isLoading: isCreatingUser,
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Already have an account? '),
+                  InkWell(
+                    child: Text('Register'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignIn(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

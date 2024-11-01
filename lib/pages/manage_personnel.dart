@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:task_management/models/personnel.dart';
 import 'package:task_management/pages/edit_personnel.dart';
@@ -7,8 +8,12 @@ import 'package:url_launcher/url_launcher.dart';
 class ManagePersonnel extends StatelessWidget {
   ManagePersonnel({super.key});
   final _firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
   Stream<QuerySnapshot<Map<String, dynamic>>> fetchPersonnels() {
-    return _firestore.collection("personnels").snapshots();
+    return _firestore
+        .collection("personnels")
+        .where("userId", isEqualTo: _auth.currentUser!.uid)
+        .snapshots();
   }
 
   @override

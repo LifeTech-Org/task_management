@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:task_management/models/personnel.dart';
 import 'package:task_management/pages/auth/signin.dart';
@@ -14,6 +15,7 @@ class CreatePersonnel extends StatefulWidget {
 }
 
 class _CreatePersonnelState extends State<CreatePersonnel> {
+  final _auth = FirebaseAuth.instance;
   final TextEditingController _nameController = TextEditingController();
 
   final TextEditingController _roleController = TextEditingController();
@@ -35,6 +37,7 @@ class _CreatePersonnelState extends State<CreatePersonnel> {
         "name": _nameController.text.trim(),
         "role": _roleController.text.trim(),
         "phoneNumber": _phoneNumberController.text.trim(),
+        "userId": _auth.currentUser!.uid,
       });
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Personnel successfully created!!!')));

@@ -10,6 +10,7 @@ class Task {
     required this.date,
     required this.personnelsId,
     required this.isMarkedDone,
+    required this.userId,
   });
   final String id;
   final String title;
@@ -18,6 +19,7 @@ class Task {
   final DateTime date;
   final List<String> personnelsId;
   final bool isMarkedDone;
+  final String userId;
 
   factory Task.fromJson(Map<String, dynamic> json) {
     final date = json['date'] as Timestamp;
@@ -31,7 +33,8 @@ class Task {
         start: start.toDate(),
         end: end.toDate(),
         personnelsId: personnelsId.map((id) => id.toString()).toList(),
-        isMarkedDone: json['isMarkedDone']);
+        isMarkedDone: json['isMarkedDone'],
+        userId: json['userId']);
   }
 }
 

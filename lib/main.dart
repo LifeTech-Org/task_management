@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:task_management/pages/auth/signin.dart';
 import 'package:task_management/pages/home.dart';
-import 'package:task_management/pages/onboard.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

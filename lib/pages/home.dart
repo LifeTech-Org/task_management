@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
+import 'package:task_management/models/user.dart';
 import 'package:task_management/pages/auth/signin.dart';
 import 'package:task_management/pages/create_task.dart';
 import 'package:task_management/pages/create_personnel.dart';
@@ -9,74 +12,109 @@ import 'package:task_management/pages/profile.dart';
 import 'package:task_management/widgets/action_cards.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  Home({super.key});
+  final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
+  Future<UserData> fetchUser() async {
+    final res =
+        await _firestore.collection("users").doc(_auth.currentUser!.uid).get();
+    return UserData.fromJson({...res.data()!, "id": res.id});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      // appBar: AppBar(
+      //   title: Column(
+      //     crossAxisAlignment: CrossAxisAlignment.start,
+      //     children: [
+      //       const Text('Hello!'),
+      //       FutureBuilder(
+      //           future: fetchUser(),
+      //           builder: (context, snapshot) {
+      //             if (snapshot.hasData) {
+      //               return Text(snapshot.data!.name);
+      //             }
+      //             return const Text('Loading');
+      //           }),
+      //     ],
+      //   ),
+      //   actions: [
+      //     IconButton(
+      //         onPressed: () {}, icon: const Icon(Icons.notifications_on)),
+      //     InkWell(
+      //       onTap: () {
+      //         Navigator.push(
+      //           context,
+      //           MaterialPageRoute(
+      //             builder: (context) => const Profile(),
+      //           ),
+      //         );
+      //       },
+      //       child: const Padding(
+      //         padding: EdgeInsets.all(8.0),
+      //         child: CircleAvatar(
+      //           foregroundImage: NetworkImage(
+      //               'https://lh3.googleusercontent.com/ogw/AF2bZyiJ2kY8IZ_zi4xV5r2fY-2O_ZZ8y0gtTcE34XqLyXfpcKk=s64-c-mo'),
+      //         ),
+      //       ),
+      //     ),
+      //   ],
+      // ),
+      drawer: CustomDrawer(),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text('Hello!'),
-            Text('Esther Howard'),
-          ],
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {}, icon: const Icon(Icons.notifications_on)),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Profile(),
+            Stack(
+              children: [
+                Image.asset(
+                  "assets/images/home.jpeg",
+                  height: 400,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
-              );
-            },
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: CircleAvatar(
-                foregroundImage: NetworkImage(
-                    'https://lh3.googleusercontent.com/ogw/AF2bZyiJ2kY8IZ_zi4xV5r2fY-2O_ZZ8y0gtTcE34XqLyXfpcKk=s64-c-mo'),
+                Container(
+                  color: const Color.fromRGBO(0, 0, 0, .5),
+                  width: double.infinity,
+                  height: 400,
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                          child: ActionCard(
+                              title: "Create Task", page: CreateTask())),
+                      SizedBox(width: 12),
+                      Expanded(
+                          child: ActionCard(
+                              title: "Manage Task", page: ManageTask())),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: ActionCard(
+                              title: "Create Personnel",
+                              page: CreatePersonnel())),
+                      const SizedBox(width: 12),
+                      Expanded(
+                          child: ActionCard(
+                              title: "Manage Personnel",
+                              page: ManagePersonnel())),
+                    ],
+                  )
+                ],
               ),
             ),
-          ),
-        ],
-      ),
-      drawer: CustomDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 60,
-            ),
-            Row(
-              children: [
-                Expanded(
-                    child:
-                        ActionCard(title: "Create Task", page: CreateTask())),
-                SizedBox(width: 12),
-                Expanded(
-                    child:
-                        ActionCard(title: "Manage Task", page: ManageTask())),
-              ],
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            Row(
-              children: [
-                Expanded(
-                    child: ActionCard(
-                        title: "Create Personnel", page: CreatePersonnel())),
-                const SizedBox(width: 12),
-                Expanded(
-                    child: ActionCard(
-                        title: "Manage Personnel", page: ManagePersonnel())),
-              ],
-            )
           ],
         ),
       ),
@@ -104,7 +142,7 @@ class CustomDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const Home(),
+                  builder: (context) => Home(),
                 ),
               );
             },

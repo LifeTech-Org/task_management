@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:task_management/models/personnel.dart';
 import 'package:task_management/models/task.dart';
@@ -16,9 +17,13 @@ class _CreateTaskState extends State<CreateTask> {
   final _firestore = FirebaseFirestore.instance;
 
   final TextEditingController _titleController = TextEditingController();
+  final _auth = FirebaseAuth.instance;
 
   Future<List<Personnel>> fetchPersonnels() async {
-    final collection = await _firestore.collection("personnels").get();
+    final collection = await _firestore
+        .collection("personnels")
+        .where("userId", isEqualTo: _auth.currentUser!.uid)
+        .get();
     final personnels = collection.docs
         .map((doc) => {...doc.data(), "id": doc.id})
         .map((json) => Personnel.fromJson(json))
@@ -62,6 +67,7 @@ class _CreateTaskState extends State<CreateTask> {
             date!.year, date!.month, date!.day, end!.hour, end!.minute),
         "personnelsId": _selectedPersonnelsId,
         "isMarkedDone": false,
+        "userId": _auth.currentUser!.uid,
       });
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Task successfully created!!!')));
@@ -112,14 +118,28 @@ class _CreateTaskState extends State<CreateTask> {
                             Expanded(
                               child: CustomFormField(
                                 title: 'Start Time',
-                                form: TextButton(
-                                  onPressed: () async {
+                                form: InkWell(
+                                  onTap: () async {
                                     final time = await selectTime(context);
                                     setState(() {
                                       start = time;
                                     });
                                   },
-                                  child: Text('Select'),
+                                  child: Container(
+                                    height: 40,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black54),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        start == null
+                                            ? 'Choose Time'
+                                            : start!.format(context),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -129,14 +149,29 @@ class _CreateTaskState extends State<CreateTask> {
                             Expanded(
                               child: CustomFormField(
                                 title: 'End Time',
-                                form: TextButton(
-                                    onPressed: () async {
-                                      final time = await selectTime(context);
-                                      setState(() {
-                                        end = time;
-                                      });
-                                    },
-                                    child: const Text('Select')),
+                                form: InkWell(
+                                  onTap: () async {
+                                    final time = await selectTime(context);
+                                    setState(() {
+                                      end = time;
+                                    });
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black54),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        end == null
+                                            ? 'Choose Time'
+                                            : end!.format(context),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -146,15 +181,29 @@ class _CreateTaskState extends State<CreateTask> {
                         ),
                         CustomFormField(
                           title: 'Date',
-                          form: TextButton(
-                              onPressed: () async {
-                                final selectedDate = await selectDate(context);
-                                setState(() {
-                                  date = selectedDate;
-                                });
-                              },
-                              child: Text(
-                                  date == null ? 'Select' : formatDate(date!))),
+                          form: InkWell(
+                            onTap: () async {
+                              final selectedDate = await selectDate(context);
+                              setState(() {
+                                date = selectedDate;
+                              });
+                            },
+                            child: Container(
+                              height: 40,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black54),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  date == null
+                                      ? 'DD/MM/YYYY'
+                                      : formatDate(date!),
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                         const SizedBox(
                           height: 36,

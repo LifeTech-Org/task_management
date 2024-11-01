@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:task_management/pages/auth/forget_password.dart';
 import 'package:task_management/pages/auth/signup.dart';
 import 'package:task_management/pages/create_task.dart';
-import 'package:task_management/pages/home.dart';
 import 'package:task_management/widgets/custom_textfield.dart';
 
 class SignIn extends StatefulWidget {
