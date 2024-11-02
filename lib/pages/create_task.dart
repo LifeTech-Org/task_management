@@ -55,6 +55,11 @@ class _CreateTaskState extends State<CreateTask> {
 
   void createTask(BuildContext context) async {
     try {
+      if (_titleController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Title field is empty...')));
+        return;
+      }
       setState(() {
         isCreating = true;
       });
@@ -71,7 +76,7 @@ class _CreateTaskState extends State<CreateTask> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Task successfully created!!!')));
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => ManageTask(),

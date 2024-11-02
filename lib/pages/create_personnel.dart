@@ -44,7 +44,7 @@ class _CreatePersonnelState extends State<CreatePersonnel> {
       setState(() {
         _isCreatingPersonnel = false;
       });
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => ManagePersonnel(),
